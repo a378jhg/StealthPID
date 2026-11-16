@@ -2,5 +2,5 @@ id=stealth_pid
 name=StealthPID 内核级隐匿
 version=v1.0
 versionCode=1
-author=YourName
+author=a378jhg
 description=底层 Zygisk 注入结合内核 PID 压制，专杀 PID 及 Seccomp 风控检测。
