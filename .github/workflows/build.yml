@@ -14,13 +14,29 @@ jobs:
         with:
           ndk-version: r25c
 
-      - name: Build and Package
+      - name: Build C++
         run: |
-          # 运行模板自带的打包脚本 (自动编译C++，并把 template 目录打包)
-          python3 build.py
+          cd native
+          mkdir -p build
+          cd build
+          # 调用 CMake 编译我们写的 C++ 代码
+          cmake .. -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK_HOME/build/cmake/android.toolchain.cmake -DANDROID_ABI=arm64-v8a -DANDROID_PLATFORM=android-30
+          make -j$(nproc)
+
+      - name: Prepare Final ZIP
+        run: |
+          # 1. 在 template 文件夹里建一个 zygisk 目录（Zygisk 模块必须要有）
+          mkdir -p template/zygisk
+          
+          # 2. 把你编译好的 .so 文件拷过去，并强行改名为 arm64-v8a.so
+          cp native/build/super_hide_fix.so template/zygisk/arm64-v8a.so
+          
+          # 3. 进入 template 目录，把里面的所有东西（包含你的脚本、pid_wrap 和刚编译的so）打包
+          cd template
+          zip -r ../SuperHide-Module.zip *
 
       - name: Upload ZIP
         uses: actions/upload-artifact@v4
         with:
           name: SuperHide-Module
-          path: "*.zip"
+          path: SuperHide-Module.zip
