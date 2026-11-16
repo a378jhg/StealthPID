@@ -1,0 +1,26 @@
+name: Build Super Module
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup NDK
+        uses: nttld/setup-ndk@v1
+        with:
+          ndk-version: r25c
+
+      - name: Build and Package
+        run: |
+          # 运行模板自带的打包脚本 (自动编译C++，并把 template 目录打包)
+          python3 build.py
+
+      - name: Upload ZIP
+        uses: actions/upload-artifact@v4
+        with:
+          name: SuperHide-Module
+          path: "*.zip"
