@@ -1,7 +1,6 @@
-id=${moduleId}
-name=${moduleName}
-version=${versionName}
-versionCode=${versionCode}
-author=5ec1cff
-description=Module sample
-#updateJson=
+id=super_hide_fix
+name=SuperHide 终极防检测
+version=v1.0
+versionCode=1
+author=You
+description=底层Hook Seccomp及PID，配合Zygisk瞬间欺骗环境检测。
